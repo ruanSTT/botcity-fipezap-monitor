@@ -1,0 +1,1 @@
+from src.class_inicializer import AppContainer
