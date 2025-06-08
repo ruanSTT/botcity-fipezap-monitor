@@ -2,8 +2,7 @@ import os
 import logging
 from datetime import datetime
 
-import pandas as pd
-import plotly.express as px
+from .graph_generator import GraphGenerator
 
 from botcity.web import WebBot
 
@@ -33,45 +32,29 @@ class Logging:
         
 
 
-class BotCityContainer: # Container class that instantiates WebBot from the botcity (web) library
+class BotCityContainer: 
+    """
+    Container class that instantiates WebBot from the botcity (web) library.
+    """ 
     def __init__(self) -> WebBot:
-        self.bot_obj: WebBot = WebBot 
+        self.webbot_obj: WebBot = WebBot 
 
 
-class DriverContainer:  # Container class that instantiates a driver from the rpa_driver_downloader library
+class DriverContainer:
+    """
+    Container class that instantiates a driver from the rpa_driver_downloader library
+    """
     def __init__(self) -> Gecko:
         self.driver_obj: Gecko = Gecko
 
 
 class GraphContainer:
-    
     def __init__(self):
-        # No fixed dependencies will be used, constructor just for reuse
-        pass
-
-
-    def generate_graph(
-        self,
-        df: pd.DataFrame,
-        chart_type: str,
-        x_axis: str,
-        y_axis: str,
-        title: str = "Generated Chart"
-    ):
-        if chart_type == "line":
-            fig = px.line(df, x=x_axis, y=y_axis, title=title)
-        elif chart_type == "bar":
-            fig = px.bar(df, x=x_axis, y=y_axis, title=title)
-        elif chart_type == "scatter":
-            fig = px.scatter(df, x=x_axis, y=y_axis, title=title)
-        else:
-            raise ValueError(f"Unsupported chart type: {chart_type}")
-
-        fig.show()
+        self.graph_generator_obj: GraphGenerator = GraphGenerator()
 
 
 class AppContainer:
     def __init__(self):
-        self.bot_instance: BotCityContainer = BotCityContainer()
-        self.driver_instance: DriverContainer = DriverContainer()
-        self.graph_instance: GraphContainer = GraphContainer()
+        self.botcity_container: BotCityContainer = BotCityContainer()
+        self.driver_container: DriverContainer = DriverContainer()
+        self.graph_container: GraphContainer = GraphContainer()
