@@ -1,3 +1,5 @@
+import logging
+
 import pandas as pd
 
 from .class_inicializer import GraphContainer
@@ -15,3 +17,7 @@ class FipeZapMain():
         self.bot: WebBot = webbot
         self.driver: Gecko = driver
         self.graph: GraphContainer = graph_container
+
+
+    def main(self):
+        logging.info()

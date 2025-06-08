@@ -1,7 +1,7 @@
 import os
 import logging
-from datetime import datetime
 
+from .logger import CreateLogging, LoggingTitle
 from .graph_generator import GraphGenerator
 
 from botcity.web import WebBot
@@ -9,29 +9,18 @@ from botcity.web import WebBot
 from rpa_driver_downloader import Gecko  # My own package: https://pypi.org/project/rpa-driver-downloader/
 
 
-class Logging:
+class LoggingContainer:
+    """
+    Container that creates a local 'bot_logging' folder, and a logging file (.txt) to follow the process.
+    Also create a 'logging_title' object that allows to use customizable logs name.
+    """
     def __init__(self):
-        self._create_logging()
+        self.logger: CreateLogging = CreateLogging()
+        self.logger._create_logging_file()
 
-
-    def _create_logging(self) -> logging:
-        log_dir = os.path.join(os.getcwd(), "botcity-fipezap-monitor")
-        os.makedirs(log_dir, exist_ok=True)
-
-        today = datetime.now().strftime("%d-%m-%Y")
-        LOG_FILE = os.path.join(log_dir, f"log-{today}.txt")
-
-        logging.basicConfig(
-            level=logging.info,
-            format="%(asctime)s | %(levelname)s | %(name)s | %(message)s",
-            datefmt="%Y-%m-%d %H:%M:%S",
-            handlers=[
-                logging.FileHandler(LOG_FILE, encoding='utf-8')
-            ]
-        )
+        self.logging_title: LoggingTitle = LoggingTitle()
         
-
-
+ 
 class BotCityContainer: 
     """
     Container class that instantiates WebBot from the botcity (web) library.
@@ -49,6 +38,9 @@ class DriverContainer:
 
 
 class GraphContainer:
+    """
+    Container class that instantiates a 'graph_generator_obj' object from the GraphGenerator
+    """
     def __init__(self):
         self.graph_generator_obj: GraphGenerator = GraphGenerator()
 
